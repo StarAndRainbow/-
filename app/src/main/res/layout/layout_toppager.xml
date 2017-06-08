@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/topPage_load_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+
+            <ProgressBar
+                android:id="@+id/topPager_load_progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.ProgressBar.Small"/>
+
+            <TextView
+                android:id="@+id/topPager_load_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加载中"
+                android:layout_marginLeft="10dp"
+                />
+        </LinearLayout>
+    <com.ityingli.www.mynews.View.TopListView
+        android:id="@+id/top_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ></com.ityingli.www.mynews.View.TopListView>
+    </FrameLayout>
+</LinearLayout>

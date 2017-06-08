@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        >
+    <ImageView
+        android:id="@+id/type3_img"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:src="@drawable/e"
+        android:scaleType="centerCrop"
+        />
+    <TextView
+        android:id="@+id/type3_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="游戏王"
+        android:textSize="16sp"
+        android:textColor="#313335"
+        android:padding="2dp"
+        />
+    <TextView
+        android:id="@+id/type3_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="童年的回忆"
+        android:textSize="12sp"
+        android:textColor="#9999BC"
+        android:padding="2dp"
+        />
+         </LinearLayout>
+</android.support.v7.widget.CardView>
