@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabTextColor="@color/gray"
-        app:tabSelectedTextColor="@color/green"
+        app:tabSelectedTextColor="@color/tabLayout"
+        app:tabIndicatorColor="@color/tabLayout"
         app:tabMode="scrollable"
         ></android.support.design.widget.TabLayout>
 

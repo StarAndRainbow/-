@@ -1,4 +1,4 @@
-﻿package com.ityingli.www.mynews.Pager.URLPake;
+package com.ityingli.www.mynews.Pager.URLPake;
 
 
 
@@ -8,11 +8,11 @@
 
 public  class HomePagerUri {
     /*
-    * 聚合数据
-    * */
-   public  static final   String KEY  ="";
+    * �ۺ�����
+    * *
+    */
+    public  static final String KEY  ="bdfaafe654398a797ed132fe37c1626b";
    // String topUrl = "http://v.juhe.cn/toutiao/index?type=top&key=APPKEY";
-   //top(头条，默认),shehui(社会),guonei(国内),guoji(国际),yule(娱乐),tiyu(体育)junshi(军事),keji(科技),caijing(财经),shishang(时尚)
    public static  String TOPURL = "http://v.juhe.cn/toutiao/index?type=top&key="+KEY ;
    public static  String SHEHUIURL = "http://v.juhe.cn/toutiao/index?type=shehui&key="+KEY ;
    public static  String GUONEIURL = "http://v.juhe.cn/toutiao/index?type=guonei&key="+KEY ;

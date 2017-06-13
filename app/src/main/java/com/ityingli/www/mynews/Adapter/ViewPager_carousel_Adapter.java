@@ -42,7 +42,7 @@ public class ViewPager_carousel_Adapter extends PagerAdapter {
         View view  =LayoutInflater.from(mcontext).inflate( R.layout.ribao_viewpager_item,container,false);
         ImageView img_iv = (ImageView)view.findViewById(R.id.img_iv);
         TextView title_tv= (TextView)view.findViewById(R.id.title_tv);
-        Glide.with(mcontext).load(ImgDatas.get(position).getImgUri()).into(img_iv);
+        Glide.with(mcontext).load(ImgDatas.get(position).getImgUri()).placeholder(R.drawable.load_bg).error(R.drawable.error).into(img_iv);
         img_iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         title_tv.setText(ImgDatas.get(position).getTitle());
         container.addView(view);
@@ -53,5 +53,4 @@ public class ViewPager_carousel_Adapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
        container.removeView(container);
     }
-
 }

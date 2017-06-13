@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ityingli.www.mynews.ActivityPack.Photo_content_bigPhoto;
 import com.ityingli.www.mynews.Adapter.Photo_recycleView_Adapter;
 import com.ityingli.www.mynews.Pager.URLPake.PhoToFragmentUri;
 import com.ityingli.www.mynews.R;
+import com.ityingli.www.mynews.Util.ACache;
 import com.ityingli.www.mynews.Util.DensityUtil;
 import com.ityingli.www.mynews.Util.parseUrlFromRegest;
 
@@ -37,6 +39,10 @@ public class photo_home extends Fragment {
     private static final String TAG = "photo_home";
     View view;
     private RecyclerView recycleView;
+    /*
+    * 缓存
+    * */
+    private ACache achche;
 
     /*
     * 访问网络返回的数据
@@ -59,15 +65,14 @@ public class photo_home extends Fragment {
             switch (msg.what){
                 case MESSAGE_IMGDATAS:
                     //Log.e(TAG, "handleMessage: "+urlDatas.size()+"==="+urlDatas2.size() );
-                    adapter = new Photo_recycleView_Adapter(urlDatas,getContext());
-                    recycleView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                     /*
                     * 设置回调接口
                     * */
                     adapter.setItemClick(new Photo_recycleView_Adapter.ItemClick() {
                         @Override
                         public void itemClick(View view, int position) {
-                            //Toast.makeText(getContext(),""+position,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),""+position, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getContext(), Photo_content_bigPhoto.class);
                             //携带一个图片的网址过去
                             intent.putExtra("imgurl",urlDatas2.get(position));
@@ -83,6 +88,10 @@ public class photo_home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        /*
+        * 获取一个缓存的对象
+        * */
+        achche  = ACache.get(getContext());
          view  =   inflater.inflate(R.layout.fragment_photo_home, container, false);
         initView();
         initAdapter();
@@ -91,10 +100,50 @@ public class photo_home extends Fragment {
         * */
         recycleView.addItemDecoration(new ItemDecoration());
         /*
+        * 设置RecycleView的适配器，获取到数据的时候更新数据就ok了
+        * */
+        //标清
+        urlDatas = new ArrayList<>();
+        //高清
+        urlDatas2 = new ArrayList<>();
+        adapter = new Photo_recycleView_Adapter(urlDatas,getContext());
+        recycleView.setAdapter(adapter);
+
+         /*
         *访问网络获取要用到的图片路径（推荐）
         **/
-        geNetWorktDatas();
 
+
+
+        //实现缓存功能
+        for(int i = 0 ;i<15;i++){
+            if(achche.getAsString("urlDatas"+i)!=null){
+               //有缓存
+               //保存到集合
+              urlDatas.add(achche.getAsString("urlDatas"+i));
+            }
+        }
+        /*
+        * 如果urlDatas！=null
+        * */
+        if(urlDatas.size()>0){
+            //如果路径保存到集合中
+            adapter.notifyDataSetChanged();
+
+            adapter.setItemClick(new Photo_recycleView_Adapter.ItemClick() {
+                @Override
+                public void itemClick(View view, int position) {
+                    Log.e(TAG, "itemClick: "+position );
+                     Intent intent = new Intent(getContext(), Photo_content_bigPhoto.class);
+                    //携带一个图片的网址过去
+                    intent.putExtra("imgurl",achche.getAsString("urlDatas2"+position));
+                    startActivity(intent);
+                }
+            });
+        }else{
+            //如果集合中没有数据
+            geNetWorktDatas();
+        }
         return view;
     }
 
@@ -133,8 +182,7 @@ public class photo_home extends Fragment {
     * */
     private void parseFromRegest(String stringurl) {
 
-        //标清
-        urlDatas = new ArrayList<>();
+
        /* String reg = "(\"thumbURL\":\"){1}((http:|https:){1}(//){1}((?!\").)*?.jpg)";
         Pattern pattern = Pattern.compile(reg);
         Matcher mat= pattern.matcher(stringurl);
@@ -142,8 +190,7 @@ public class photo_home extends Fragment {
             urlDatas.add(mat.group(2));
         }*/
 
-        //高清
-        urlDatas2 = new ArrayList<>();
+
        /* String reg_2 = "(\"objURL\":\"){1}((http:|https:){1}(//){1}((?!\").)*?.jpg)";
         Pattern pattern2 = pattern.compile(reg_2);
         Matcher matcher2 = pattern2.matcher(stringurl);
@@ -160,6 +207,16 @@ public class photo_home extends Fragment {
             urlDatas.add(matcher3.group(2));
            // Log.e(TAG, "parseFromRegest: "+matcher3.group(7));
             urlDatas2.add(matcher3.group(7));
+        }
+
+        /*
+        *添加清晰图片的路径
+        * */
+        for(int i = 0  ;i<urlDatas.size();i++){
+             achche.put("urlDatas"+i,urlDatas.get(i));
+            achche.put("urlDatas2"+i,urlDatas2.get(i));
+            //Log.e(TAG, "parseFromRegest: --"+achche.getAsString("urlDatas"+i));
+            //Log.e(TAG, "parseFromRegest: =="+achche.getAsString("urlDatas2"+i));
         }
     }
 

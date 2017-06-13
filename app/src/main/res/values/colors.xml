@@ -9,4 +9,5 @@
     <color name="green">#21A719</color>
     <color name="bottomGray">#474747</color>
     <color name="White">#ffffff</color>
+    <color name="tabLayout">#303F9F</color>
 </resources>

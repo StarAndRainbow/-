@@ -27,6 +27,7 @@ import com.ityingli.www.mynews.Bean.RiBao_Viewpager;
 import com.ityingli.www.mynews.Bean.RiBao_recycleView_item;
 import com.ityingli.www.mynews.Pager.URLPake.RibaoFragment_Uri;
 import com.ityingli.www.mynews.R;
+import com.ityingli.www.mynews.Util.ACache;
 import com.ityingli.www.mynews.Util.DensityUtil;
 
 import org.json.JSONArray;
@@ -67,6 +68,7 @@ public class RiBaoFragment2 extends Fragment {
                 case MESSGE_ONE:
                     recycleViewAdapter = (RiBao_RecycleView_Adapter)new RiBao_RecycleView_Adapter(recycleViewDatas,getContext(),topView);
                     recycleView.setAdapter(recycleViewAdapter);
+                    loading_ll.setVisibility(View.GONE);
                     /*
                     * 并且设置点击事件
                     * */
@@ -96,6 +98,8 @@ public class RiBaoFragment2 extends Fragment {
     * */
     private int beforyDay = 1;    //1-1=0
     private FloatingActionButton floatingActionButton;
+    private LinearLayout loading_ll;
+    private ACache acache;
 
 
     @Override
@@ -103,13 +107,18 @@ public class RiBaoFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.layout_ribao_fagment2,container,false);
         /*
+        * 初始化缓存对象
+        * */
+        acache = ACache.get(getContext());
+        recycleViewDatas =  new ArrayList<>();
+        viewPagerDatas = new ArrayList<>();
+        /*
         * 这里使用一个RecycleView的方法添加头部的方法
         * */
        /*
        * 获取当前时间
        * */
        getNowDate(beforyDay);
-
         /*
         * 初始化变量
         * */
@@ -119,10 +128,24 @@ public class RiBaoFragment2 extends Fragment {
         * */
         initEvent();
 
+
+
         /*
         * 初始化数据
         * */
-        initDatas();
+       // initDatas();
+        //缓存
+        if(acache.getAsString("Json")!=null){
+            getViewPagerJsonData(acache.getAsString("Json"));
+            handler.sendEmptyMessage(MESSGE_TWO);
+            getRecycleViewDatas(acache.getAsString("Json"));
+            handler.sendEmptyMessage(MESSGE_ONE);
+        }else{
+            initDatas();
+        }
+
+
+
         /*
         * 监听recycleView是否滑动到底部
         * */
@@ -323,8 +346,6 @@ public class RiBaoFragment2 extends Fragment {
     }
 
     private void initDatas() {
-        recycleViewDatas =  new ArrayList<>();
-        viewPagerDatas = new ArrayList<>();
         /*
         * 连网获取
         * */
@@ -343,6 +364,7 @@ public class RiBaoFragment2 extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 //成功获取返回的json数据
                 String string  = response.body().string();
+                acache.put("Json",string);
                 /*
                 * 获取头部的数据
                 * */
@@ -411,6 +433,7 @@ public class RiBaoFragment2 extends Fragment {
         viewPager = (ViewPager)topView.findViewById(R.id.viewpager_carousel);
         dot_ll_id = (LinearLayout)topView.findViewById(R.id.dot_ll_id);
 
+
         /*
        * 设置点数
        * */
@@ -439,6 +462,10 @@ public class RiBaoFragment2 extends Fragment {
         * 悬浮按钮
         * */
         floatingActionButton = (FloatingActionButton)view.findViewById(R.id.floatingActionButton);
+        /*
+        * 加载中
+        * */
+        loading_ll = (LinearLayout)view.findViewById(R.id.loading_ll);
 
     }
 

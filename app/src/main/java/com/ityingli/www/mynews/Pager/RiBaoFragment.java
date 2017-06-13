@@ -93,7 +93,9 @@ public class RiBaoFragment extends Fragment {
         * */
        //recyclerView.setOnScrollListener(new recycleViweOnScrollView(mcontext));
 
-
+       /*
+       *
+       * */
 
         return view;
     }
